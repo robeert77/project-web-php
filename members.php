@@ -7,16 +7,14 @@
     $query = "SELECT * FROM members";
 
     if (!empty($_GET['order_by'])) {
-        $allowed_columns = ['name', 'data_inscrierii']; // Coloane permise pentru sortare
+        $allowed_columns = [
+            'name' => 'first_name', 
+            'data_inscrierii' => 'created_at'
+        ];
         $order_by = $_GET['order_by'];
         
-        // Validare pentru a preveni SQL Injection
-        if (in_array($order_by, $allowed_columns)) {
-            if ($order_by === 'name') {
-                $query .= " ORDER BY first_name ASC"; // Presupunem că sortăm după first_name
-            } elseif ($order_by === 'data_inscrierii') {
-                $query .= " ORDER BY created_at ASC"; // Sortare după data
-            }
+        if (array_key_exists($order_by, $allowed_columns)) {
+            $query .= " ORDER BY " . $allowed_columns[$order_by] . " ASC";
         }
     }
     $stmt = $db->prepare($query);
@@ -25,30 +23,13 @@
 
 <h2>Members Directory</h2>
 
-<div class="input-group mb-3">
+<form method="GET" action="" class="input-group mb-3">
     <label class="input-group-text" for="sortSelect">Sort by</label>
-    <select class="form-select" id="sortSelect" onchange="applySort()">
-        <option value="name" <?php echo isset($_GET['order_by']) && $_GET['order_by'] === 'name' ? 'selected' : ''; ?>>Name</option>
-        <option value="data_inscrierii" <?php echo isset($_GET['order_by']) && $_GET['order_by'] === 'data_inscrierii' ? 'selected' : ''; ?>>Date</option>
+    <select class="form-select" id="sortSelect" name="order_by" onchange="this.form.submit()">
+        <option value="name" <?php echo !empty($order_by) && $order_by === 'name' ? 'selected' : ''; ?>>Name</option>
+        <option value="data_inscrierii" <?php echo !empty($order_by) && $order_by === 'data_inscrierii' ? 'selected' : ''; ?>>Date</option>
     </select>
-</div>
-
-<script>
-    // Functie pentru a aplica sortarea
-    function applySort() {
-        const sortSelect = document.getElementById('sortSelect');
-        const selectedValue = sortSelect.value;
-        const currentUrl = new URL(window.location.href);
-        
-        if (selectedValue) {
-            currentUrl.searchParams.set('order_by', selectedValue);
-        } else {
-            currentUrl.searchParams.delete('order_by');
-        }
-
-        window.location.href = currentUrl;
-    }
-</script>
+</form>
 
 <div class="row">
     <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
