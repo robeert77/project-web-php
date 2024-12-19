@@ -11,22 +11,18 @@
             VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $db->prepare($query);
-        // $stmt->execute([
-        //     $_POST['first_name'],
-        //     $_POST['last_name'],
-        //     $_POST['email'],
-        //     $_POST['profession'],
-        //     $_POST['company'],
-        //     $_POST['expertise'],
-        //     $_POST['linkedin_profile']
+        $stmt->execute([
+            $_POST['first_name'],
+            $_POST['last_name'],
+            $_POST['email'],
+            $_POST['profession'],
+            $_POST['company'],
+            $_POST['expertise'],
+            $_POST['linkedin_profile']
             
-        // ]);
+        ]);
         $memberId = $db->lastInsertId();
-
-        var_dump($_FILES);
-        die();
-
-        //$profile_picture = $_FILES['profile_picture'];
+      
         $fileTmpPath = $_FILES['profile_picture']['tmp_name'];
         $fileName = $_FILES['profile_picture']['name'];
         $fileSize = $_FILES['profile_picture']['size'];
@@ -38,10 +34,6 @@
         }
 
         $destination = $uploadDir . $memberId;
-
-        var_dump($destination);
-        die();
-
         move_uploaded_file($fileTmpPath, $destination);
 
             
