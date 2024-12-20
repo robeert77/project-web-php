@@ -7,29 +7,39 @@
     $query = "SELECT * FROM members";
 
     if (!empty($_GET['order_by'])) {
-        $allowed_columns = [
-            'name' => 'first_name', 
-            'data_inscrierii' => 'created_at'
-        ];
+        $allowed_columns = ['first_name', 'created_at'];
         $order_by = $_GET['order_by'];
         
-        if (array_key_exists($order_by, $allowed_columns)) {
-            $query .= " ORDER BY " . $allowed_columns[$order_by] . " ASC";
+        if (in_array($order_by, $allowed_columns)) {
+            $query .= " ORDER BY " . $order_by . " ASC";
         }
     }
+
     $stmt = $db->prepare($query);
     $stmt->execute();
 ?>
 
-<h2>Members Directory</h2>
+<h4>Filters</h4>
 
-<form method="GET" action="" class="input-group mb-3">
-    <label class="input-group-text" for="sortSelect">Sort by</label>
-    <select class="form-select" id="sortSelect" name="order_by" onchange="this.form.submit()">
-        <option value="name" <?php echo !empty($order_by) && $order_by === 'name' ? 'selected' : ''; ?>>Name</option>
-        <option value="data_inscrierii" <?php echo !empty($order_by) && $order_by === 'data_inscrierii' ? 'selected' : ''; ?>>Date</option>
-    </select>
+<form method="GET" class="mb-3">
+    <div class="row my-3">
+        <div class="col-md-3">
+            <div class="form-floating">
+                <select class="form-select" id="sortSelect" name="order_by">
+                    <option value="" <?php echo empty($order_by) ? 'selected' : ''; ?>>Default</option>
+                    <option value="first_name" <?php echo !empty($order_by) && $order_by === 'first_name' ? 'selected' : ''; ?>>Name</option>
+                    <option value="created_at" <?php echo !empty($order_by) && $order_by === 'created_at' ? 'selected' : ''; ?>>Date</option>
+                </select>
+                <label for="sortSelect">Sort by</label>
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Apply</button>
 </form>
+
+<hr>
+
+<h2>Members Directory</h2>
 
 <div class="row">
     <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
