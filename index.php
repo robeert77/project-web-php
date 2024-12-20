@@ -1,6 +1,8 @@
 <?php
-    include_once "includes/header.php";
+    include_once "includes/header.php"; 
 ?>
+
+<link rel="stylesheet" type="text/css" href="css/style.css"/>
 
 <div class="jumbotron">
     <h1 class="display-4">Welcome to Women in FinTech</h1>

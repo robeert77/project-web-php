@@ -7,6 +7,12 @@
         $query = "DELETE FROM members WHERE id = ?";
         $stmt = $db->prepare($query);
         $stmt->execute([$_GET['id']]);
+
+        $uploadDir = 'pictures/';
+        if (file_exists($uploadDir . $_GET['id']))
+        {
+            unlink($uploadDir . $_GET['id']);
+        }
     }
     
     header("Location: members.php");

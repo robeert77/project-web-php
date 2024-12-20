@@ -19,8 +19,24 @@
             $_POST['company'],
             $_POST['expertise'],
             $_POST['linkedin_profile']
+            
         ]);
+        $memberId = $db->lastInsertId();
+      
+        $fileTmpPath = $_FILES['profile_picture']['tmp_name'];
+        $fileName = $_FILES['profile_picture']['name'];
+        $fileSize = $_FILES['profile_picture']['size'];
+        $fileType = $_FILES['profile_picture']['type'];
 
+        $uploadDir = 'pictures/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+
+        $destination = $uploadDir . $memberId;
+        move_uploaded_file($fileTmpPath, $destination);
+
+            
         header("Location: members.php");
         exit();
     }
@@ -28,7 +44,7 @@
 
 <div class="form-container">
     <h2>Add New Member</h2>
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label>First Name</label>
             <input type="text" name="first_name" class="form-control" required>
@@ -56,6 +72,10 @@
         <div class="form-group">
             <label>LinkedIn Profile</label>
             <input type="url" name="linkedin_profile" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Profile Picture</label>
+            <input type="file" name="profile_picture" class="form-control" accept="image/*">
         </div>
         <button type="submit" class="btn btn-primary">Add Member</button>
     </form>

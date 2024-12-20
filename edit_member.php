@@ -22,6 +22,21 @@
             $_POST['linkedin_profile'],
             $_GET['id']
         ]);
+
+    
+        $fileTmpPath = $_FILES['profile_picture']['tmp_name'];
+        $fileName = $_FILES['profile_picture']['name'];
+        $fileSize = $_FILES['profile_picture']['size'];
+        $fileType = $_FILES['profile_picture']['type'];
+
+        $uploadDir = 'pictures/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+
+        $destination = $uploadDir . $_GET['id'];
+        move_uploaded_file($fileTmpPath, $destination);
+
         header("Location: members.php");
         exit();
     }
@@ -34,7 +49,7 @@
 
 <div class="form-container">
     <h2>Edit Member</h2>
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label>First Name</label>
             <input type="text" name="first_name" class="form-control"
@@ -69,6 +84,11 @@
             <input type="url" name="linkedin_profile" class="form-control"
             value="<?php echo htmlspecialchars($member['linkedin_profile']); ?>">
         </div>
+        <div class="form-group">
+            <label>Profile Picture</label>
+            <input type="file" name="profile_picture" class="form-control" accept="image/*">
+        </div>
+
         <button type="submit" class="btn btn-primary">Update Member</button>
     </form>
 </div>
