@@ -3,13 +3,10 @@ body {
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif;
-    color:beige;
-    background-color: rgb(43, 43, 43);
 }
 
 .container {
     flex: 1;
-    padding: 10px;
 }
 
 .footer {
@@ -27,4 +24,8 @@ body {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
+}
+
+textarea {
+    height: 100px !important;
 }
