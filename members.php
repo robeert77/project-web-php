@@ -5,7 +5,12 @@
     $database = new Database();
     $db = $database->getConnection();
     $query = "SELECT * FROM members";
+    $professions_query = "SELECT DISTINCT profession FROM members";
+    $professions_stmt = $db->prepare($professions_query);
+    $professions_stmt->execute();
+    $professions = $professions_stmt->fetchAll(PDO::FETCH_COLUMN);
 
+    $filters = [];
     if (!empty($_GET['order_by'])) {
         $allowed_columns = ['first_name', 'created_at'];
         $order_by = $_GET['order_by'];
@@ -15,7 +20,19 @@
         }
     }
 
+    if (!empty($_GET['profession'])) {
+        $selected_profession = $_GET['profession'];
+        $filters[] = "profession = :profession";
+    }
+
+    if (!empty($filters)) {
+        $query .= " WHERE " . implode(" AND ", $filters);
+    }
+
     $stmt = $db->prepare($query);
+    if (!empty($selected_profession)) {
+        $stmt->bindParam(':profession', $selected_profession);
+    }
     $stmt->execute();
 ?>
 
@@ -34,7 +51,21 @@
             </div>
         </div>
     </div>
+    <div class="col-md-3">
+            <div class="form-floating">
+                <select class="form-select" id="professionSelect" name="profession">
+                    <option value="" <?php echo empty($_GET['profession']) ? 'selected' : ''; ?>>Default</option>
+                    <?php foreach ($professions as $profession): ?>
+                        <option value="<?php echo htmlspecialchars($profession); ?>" <?php echo !empty($_GET['profession']) && $_GET['profession'] === $profession ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($profession); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <label for="professionSelect">Profession</label>
+            </div>
+        </div>
     <button type="submit" class="btn btn-primary">Apply</button>
+    
 </form>
 
 <hr>
