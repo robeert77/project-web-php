@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Validare formular
     const form = document.querySelector('form');
     
     if (form) {

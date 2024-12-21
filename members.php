@@ -9,17 +9,8 @@
     $professions_stmt = $db->prepare($professions_query);
     $professions_stmt->execute();
     $professions = $professions_stmt->fetchAll(PDO::FETCH_COLUMN);
-
     $filters = [];
-    if (!empty($_GET['order_by'])) {
-        $allowed_columns = ['first_name', 'created_at'];
-        $order_by = $_GET['order_by'];
-        
-        if (in_array($order_by, $allowed_columns)) {
-            $query .= " ORDER BY " . $order_by . " ASC";
-        }
-    }
-
+    
     if (!empty($_GET['profession'])) {
         $selected_profession = $_GET['profession'];
         $filters[] = "profession = :profession";
@@ -29,6 +20,15 @@
         $query .= " WHERE " . implode(" AND ", $filters);
     }
 
+    if (!empty($_GET['order_by'])) {
+        $allowed_columns = ['first_name', 'created_at'];
+        $order_by = $_GET['order_by'];
+        
+        if (in_array($order_by, $allowed_columns)) {
+            $query .= " ORDER BY " . $order_by . " ASC";
+        }
+    }
+  
     $stmt = $db->prepare($query);
     if (!empty($selected_profession)) {
         $stmt->bindParam(':profession', $selected_profession);
