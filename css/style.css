@@ -12,12 +12,11 @@ body {
 .footer {
     margin-top: auto;
     padding: 10px;
-    background-color: rgb(223, 28, 28);
 }
 
 .member-card {
     margin-bottom: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .form-container {
@@ -28,4 +27,14 @@ body {
 
 textarea {
     height: 100px !important;
+}
+  
+.form-check-input:checked {
+    background-color: rgb(200, 200, 200); 
+    border-color: rgb(200, 200, 200); 
+}
+  
+.form-check-input {
+    background-color: white;
+    border-color: white;
 }
