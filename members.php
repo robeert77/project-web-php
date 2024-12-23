@@ -5,7 +5,16 @@
     $database = new Database();
     $db = $database->getConnection();
     $query = "SELECT * FROM members";
-
+    $professions_query = "SELECT DISTINCT profession FROM members";
+    $professions_stmt = $db->prepare($professions_query);
+    $professions_stmt->execute();
+    $professions = $professions_stmt->fetchAll(PDO::FETCH_COLUMN);
+    $filters = [];
+    
+    if (!empty($_GET['profession'])) {
+        $query .= ' WHERE profession LIKE :profession';
+    }
+    
     if (!empty($_GET['order_by'])) {
         $allowed_columns = ['first_name', 'created_at'];
         $order_by = $_GET['order_by'];
@@ -14,9 +23,12 @@
             $query .= " ORDER BY " . $order_by . " ASC";
         }
     }
-
+  
     $stmt = $db->prepare($query);
-    $stmt->execute();
+    if (!empty($_GET['profession'])) {
+        $stmt->bindValue(':profession', '%'. $_GET['profession'] . '%');
+    }
+    $stmt->execute()
 ?>
 
 <h4>Filters</h4>
@@ -34,7 +46,14 @@
             </div>
         </div>
     </div>
+    <div class="col-md-3">
+            <div class="form-floating">
+                <input class="form-control" id="profession" name="profession" type="text" value="<?php echo !empty($_GET['profession']) ? $_GET['profession'] : ''; ?>"/>
+                <label for="profession">Profession</label>
+            </div>
+        </div>
     <button type="submit" class="btn btn-primary">Apply</button>
+    
 </form>
 
 <hr>
