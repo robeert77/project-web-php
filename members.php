@@ -12,14 +12,9 @@
     $filters = [];
     
     if (!empty($_GET['profession'])) {
-        $selected_profession = $_GET['profession'];
-        $filters[] = "profession = :profession";
+        $query .= ' WHERE profession LIKE :profession';
     }
-
-    if (!empty($filters)) {
-        $query .= " WHERE " . implode(" AND ", $filters);
-    }
-
+    
     if (!empty($_GET['order_by'])) {
         $allowed_columns = ['first_name', 'created_at'];
         $order_by = $_GET['order_by'];
@@ -30,10 +25,10 @@
     }
   
     $stmt = $db->prepare($query);
-    if (!empty($selected_profession)) {
-        $stmt->bindParam(':profession', $selected_profession);
+    if (!empty($_GET['profession'])) {
+        $stmt->bindValue(':profession', '%'. $_GET['profession'] . '%');
     }
-    $stmt->execute();
+    $stmt->execute()
 ?>
 
 <h4>Filters</h4>
@@ -53,15 +48,8 @@
     </div>
     <div class="col-md-3">
             <div class="form-floating">
-                <select class="form-select" id="professionSelect" name="profession">
-                    <option value="" <?php echo empty($_GET['profession']) ? 'selected' : ''; ?>>Default</option>
-                    <?php foreach ($professions as $profession): ?>
-                        <option value="<?php echo htmlspecialchars($profession); ?>" <?php echo !empty($_GET['profession']) && $_GET['profession'] === $profession ? 'selected' : ''; ?>>
-                            <?php echo htmlspecialchars($profession); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-                <label for="professionSelect">Profession</label>
+                <input class="form-control" id="profession" name="profession" type="text" value="<?php echo !empty($_GET['profession']) ? $_GET['profession'] : ''; ?>"/>
+                <label for="profession">Profession</label>
             </div>
         </div>
     <button type="submit" class="btn btn-primary">Apply</button>
