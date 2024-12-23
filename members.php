@@ -4,13 +4,19 @@
     
     $database = new Database();
     $db = $database->getConnection();
+
+    $total_rows_query = "SELECT COUNT(*) AS nr_members FROM members";
+    $stmt = $db->prepare($total_rows_query);
+    $stmt->execute();
+    $total_pages_result = $stmt->fetch(PDO::FETCH_ASSOC);
+
     $query = "SELECT * FROM members";
-    $professions_query = "SELECT DISTINCT profession FROM members";
-    $professions_stmt = $db->prepare($professions_query);
-    $professions_stmt->execute();
-    $professions = $professions_stmt->fetchAll(PDO::FETCH_COLUMN);
-    $filters = [];
-    
+    $current_page = !empty($_GET['current_page']) ? $_GET['current_page'] : 0;
+    $limit = 6;
+    $offset = $current_page * $limit;
+
+    $total_pages = ceil($total_pages_result['nr_members'] / $limit);
+
     if (!empty($_GET['profession'])) {
         $query .= ' WHERE profession LIKE :profession';
     }
@@ -23,11 +29,17 @@
             $query .= " ORDER BY " . $order_by . " ASC";
         }
     }
+
+    $query .= ' LIMIT :limit OFFSET :offset';
   
     $stmt = $db->prepare($query);
     if (!empty($_GET['profession'])) {
         $stmt->bindValue(':profession', '%'. $_GET['profession'] . '%');
     }
+
+    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    
     $stmt->execute()
 ?>
 
@@ -45,13 +57,15 @@
                 <label for="sortSelect">Sort by</label>
             </div>
         </div>
-    </div>
-    <div class="col-md-3">
+        <div class="col-md-3">
             <div class="form-floating">
                 <input class="form-control" id="profession" name="profession" type="text" value="<?php echo !empty($_GET['profession']) ? $_GET['profession'] : ''; ?>"/>
                 <label for="profession">Profession</label>
             </div>
         </div>
+    </div>
+
+    <input type="hidden" name="current_page" value="<?php echo $current_page; ?>" />
     <button type="submit" class="btn btn-primary">Apply</button>
     
 </form>
@@ -93,6 +107,24 @@
         </div>
     <?php endwhile; ?>
 </div>
+
+<nav aria-label="...">
+    <ul class="pagination">
+        <li class="page-item <?php echo ($current_page > 0) ? '' : 'disabled'; ?>">
+            <a class="page-link" href="<?php echo '?current_page=' . ($current_page - 1); ?>">Previous</a>
+        </li>
+
+        <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
+            <li class="page-item <?php echo ($current_page == $i - 1) ? 'active' : ''; ?>" aria-current="page">
+                <a class="page-link"  href="<?php echo '?current_page=' . $i - 1; ?>"><?php echo $i; ?></a>
+            </li>
+        <?php } ?>
+        
+        <li class="page-item <?php echo ($current_page < $total_pages - 1) ? '' : 'disabled'; ?>">
+            <a class="page-link" href="<?php echo '?current_page=' . ($current_page + 1); ?>">Next</a>
+        </li>
+    </ul>
+</nav>
 
 <?php
     include_once "includes/footer.php"
