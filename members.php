@@ -87,7 +87,7 @@
                             <h3 class="card-title"><?php echo htmlspecialchars($row['first_name'] . ' ' . $row['last_name']); ?></h3>
                             <hr>
                             <p class="card-text mb-2"><strong>Profession: </strong><?php echo htmlspecialchars($row['profession']); ?></p>
-                            <p class="card-text mb-2"><strong>Company: </strong><?php echo htmlspecialchars($row['profession']); ?></p>
+                            <p class="card-text mb-2"><strong>Company: </strong><?php echo htmlspecialchars($row['company']); ?></p>
                         </div>
                         <div class="d-flex justify-content-end align-items-center gap-2 px-3">
                             <a href="edit_member.php?id=<?php echo $row['id']; ?>" class="btn btn-outline-primary btn-sm">
