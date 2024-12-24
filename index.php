@@ -41,6 +41,18 @@
     $companies = $company_count_stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
+<style>
+
+    .card-body {
+        flex: 1;
+    }
+
+    #memberList, #professionList, #recentMemberList, #companyList {
+        max-height: 100px;
+        overflow-y: auto;
+    }
+
+</style>
 
 <div class="p-5 bg-body-tertiary rounded-3">
     <div class="container-fluid py-5">
@@ -55,8 +67,8 @@
   <div class="col">
     <div class="card">
       <div class="card-body">
+      <h5 class="card-title" >Total members: <?php echo ($total_members); ?></h5>
       <ul class="list-group" id="memberList">
-        <h5 class="card-title" >Total members: <?php echo ($total_members); ?></h5>
             <?php 
             foreach ($members as $member) {
                 echo "<li class='list-group-item'>" . htmlspecialchars($member['full_name']) . "</li>";
