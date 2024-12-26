@@ -1,3 +1,10 @@
+<style>
+    .card:hover {
+        background-color: rgba(0, 0, 0, 0.151);
+        transition: background-color 0.7s;
+    }
+</style>
+
 <?php
     include_once "config/database.php";
     include_once "includes/header.php";

@@ -84,10 +84,10 @@
         <h5 class="card-title">Members by profession</h5>
         <ul class="list-group" id="professionList">
         <?php foreach ($professions as $profession): ?>
-                            <li class="list-group-item">
-                                <?php echo htmlspecialchars($profession['profession']); ?>: <?php echo $profession['count']; ?>
-                            </li>
-                        <?php endforeach; ?>
+            <li class="list-group-item">
+                <?php echo htmlspecialchars($profession['profession']); ?>: <?php echo $profession['count']; ?>
+            </li>
+        <?php endforeach; ?>
         </ul>
       </div>
     </div>
