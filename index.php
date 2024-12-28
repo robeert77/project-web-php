@@ -1,4 +1,6 @@
 <?php
+    echo "<link rel='stylesheet' type='text/css' href='css/aspect.css' />";
+
     include_once "config/database.php";
     include_once "includes/header.php"; 
 
@@ -41,22 +43,10 @@
     $companies = $company_count_stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
-<style>
-
-    .card-body {
-        flex: 1;
-    }
-
-    #memberList, #professionList, #recentMemberList, #companyList {
-        max-height: 100px;
-        overflow-y: auto;
-    }
-
-</style>
 
 <div class="p-5 bg-body-tertiary rounded-3">
     <div class="container-fluid py-5">
-        <h1 class="display-5 fw-bold">Welcome to Women in FinTech</h1>
+      <h1 class="display-5 fw-bold">Welcome to Women in FinTech</h1>
         <p class="lead fs-5">Empowering women in financial technology through community and collaboration.</p>
         <hr class="my-4">
         <p>Join our community of professional women in FinTech.</p>
@@ -67,14 +57,8 @@
   <div class="col">
     <div class="card">
       <div class="card-body">
-      <h5 class="card-title" >Total members: <?php echo ($total_members); ?></h5>
-      <ul class="list-group" id="memberList">
-            <?php 
-            foreach ($members as $member) {
-                echo "<li class='list-group-item'>" . htmlspecialchars($member['full_name']) . "</li>";
-            }
-            ?>
-        </ul>
+        <h5 class="card-title" >Total members: <?php echo ($total_members); ?></h5>
+          <button type="button" class="btn btn-primary btn-lg" onclick="window.location.href='members.php';">See all members</button>
         </div>
     </div>
   </div>
@@ -82,12 +66,12 @@
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">Members by profession</h5>
-        <ul class="list-group" id="professionList">
-        <?php foreach ($professions as $profession): ?>
-            <li class="list-group-item">
+          <ul class="list-group" id="professionList">
+            <?php foreach ($professions as $profession): ?>
+             <li class="list-group-item">
                 <?php echo htmlspecialchars($profession['profession']); ?>: <?php echo $profession['count']; ?>
-            </li>
-        <?php endforeach; ?>
+             </li>
+            <?php endforeach; ?>
         </ul>
       </div>
     </div>
@@ -95,12 +79,12 @@
   <div class="col">
     <div class="card">
       <div class="card-body">
-      <h5 class="card-title">New Members in Last Month: <?php echo $recent_members_count; ?></h5>
-        <ul class="list-group" id="recentMemberList">
+        <h5 class="card-title">New Members in Last Month: <?php echo $recent_members_count; ?></h5>
+         <ul class="list-group" id="recentMemberList">
             <?php foreach ($recent_members as $recent_member): ?>
                 <li class="list-group-item">
                     <?php echo htmlspecialchars($recent_member['full_name']); ?>
-                    <small>(Joined on <?php echo htmlspecialchars(date('Y-m-d', strtotime($recent_member['created_at']))); ?>)</small>
+                    <small class="text-body-secondary">Joined on <?php echo htmlspecialchars(date('d.m.Y', strtotime($recent_member['created_at']))); ?></small>
                 </li>
             <?php endforeach; ?>
         </ul>

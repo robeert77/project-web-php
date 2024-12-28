@@ -1,11 +1,6 @@
-<style>
-    .card:hover {
-        background-color: rgba(0, 0, 0, 0.151);
-        transition: background-color 0.7s;
-    }
-</style>
-
 <?php
+    echo "<link rel='stylesheet' type='text/css' href='css/aspect.css' />";
+
     include_once "config/database.php";
     include_once "includes/header.php";
     
@@ -84,7 +79,7 @@
 <div class="row">
     <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
         <div class="col-md-4">
-            <div class="card mb-3">
+            <div class="card mb-3" id="card">
                 <div class="row g-0">
                     <div class="col-md-4">
                         <img src="<?php echo 'pictures/' . $row['app_picture_name']; ?>" class="img-fluid rounded-start" alt="Profile Picture" >
