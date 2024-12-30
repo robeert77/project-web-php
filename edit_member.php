@@ -1,4 +1,6 @@
 <?php
+    echo "<link rel='stylesheet' type='text/css' href='css/aspect.css' />";
+
     include_once "config/database.php";
     include_once "includes/header.php";
     
@@ -94,7 +96,7 @@
             <label for="profile_picture">Profile Picture</label>
         </div>
 
-        <button type="submit" class="btn btn-primary">Update Member</button>
+        <button type="submit" class="btn btn-primary" id="colored_button">Update Member</button>
     </form>
 </div>
 

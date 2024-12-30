@@ -50,7 +50,7 @@
         <p class="lead fs-5">Empowering women in financial technology through community and collaboration.</p>
         <hr class="my-4">
         <p>Join our community of professional women in FinTech.</p>
-        <a class="btn btn-primary btn-lg" href="add_member.php" role="button">Join Now</a>
+        <a class="btn btn-primary btn-lg" href="add_member.php" role="button" id="colored_button">Join Now</a>
     </div>
 
     <div class="row row-cols-1 row-cols-md-2 g-4">
@@ -58,7 +58,7 @@
     <div class="card">
       <div class="card-body">
         <h5 class="card-title" >Total members: <?php echo ($total_members); ?></h5>
-          <button type="button" class="btn btn-primary btn-lg" onclick="window.location.href='members.php';">See all members</button>
+          <button type="button" class="btn btn-primary btn-lg" id="colored_button" onclick="window.location.href='members.php';">See all members</button>
         </div>
     </div>
   </div>

@@ -1,4 +1,6 @@
 <?php
+    echo "<link rel='stylesheet' type='text/css' href='css/aspect.css' />";
+
     include_once "config/database.php";
     include_once "includes/header.php";
 
@@ -87,8 +89,9 @@
             <input type="file" name="profile_picture" id="profile_picture" class="form-control" accept="image/*">
             <label for="profile_picture">Profile Picture</label>
         </div>
-        <button type="submit" class="btn btn-primary">Add Member</button>
-    </form>
+        <button type="submit" class="btn btn-primary" id="colored_button">Add Member</button>
+       
+    </form> 
 </div>
 
 <?php

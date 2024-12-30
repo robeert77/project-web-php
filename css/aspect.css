@@ -1,3 +1,7 @@
+:root {
+    --purple: #8e6fff;
+}
+
 body {
     min-height: 100vh;
     display: flex;
@@ -51,4 +55,18 @@ textarea {
 #memberList, #professionList, #recentMemberList, #companyList {
     max-height: 100px;
     overflow-y: auto;
+}
+
+.navbar.bg-primary {
+    background-color: var(--purple) !important;
+}
+
+#colored_button {
+    background-color: var(--purple);
+    border-color: var(--purple);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--purple); 
+    border-color: var(--purple); 
 }

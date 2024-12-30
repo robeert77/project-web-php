@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body data-bs-theme="light" id="bodyElement">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary" >
         <div class="container">
-        <a class="navbar-brand" href="index.php">
+        <a class="navbar-brand" href="index.php" >
         <img src="pictures/logo3.png" width="45" height="35" > 
         &nbsp Women in FinTech
         </a>            
