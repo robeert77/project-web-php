@@ -1,6 +1,4 @@
 <?php
-    echo "<link rel='stylesheet' type='text/css' href='css/aspect.css' />";
-
     include_once "config/database.php";
     include_once "includes/header.php";
     
@@ -12,7 +10,7 @@
     $stmt->execute();
     $total_pages_result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $query = "SELECT * FROM members";
+    $query = "SELECT * FROM members WHERE 1";
     $current_page = !empty($_GET['current_page']) ? $_GET['current_page'] : 0;
     $limit = 6;
     $offset = $current_page * $limit;
@@ -20,7 +18,11 @@
     $total_pages = ceil($total_pages_result['nr_members'] / $limit);
 
     if (!empty($_GET['profession'])) {
-        $query .= ' WHERE profession LIKE :profession';
+        $query .= ' AND profession LIKE :profession';
+    }
+
+    if (!empty($_GET['name'])) {
+        $query .= ' AND (first_name LIKE :name OR last_name LIKE :name)';
     }
     
     if (!empty($_GET['order_by'])) {
@@ -37,6 +39,10 @@
     $stmt = $db->prepare($query);
     if (!empty($_GET['profession'])) {
         $stmt->bindValue(':profession', '%'. $_GET['profession'] . '%');
+    }
+
+    if (!empty($_GET['name'])) {
+        $stmt->bindValue(':name', '%'. $_GET['name'] . '%');
     }
 
     $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
@@ -65,6 +71,12 @@
                 <label for="profession">Profession</label>
             </div>
         </div>
+        <div class="col-md-3">
+            <div class="form-floating">
+                <input class="form-control" id="name" name="name" type="text" value="<?php echo !empty($_GET['name']) ? $_GET['name'] : ''; ?>"/>
+                <label for="profession">Name</label>
+            </div>
+        </div>
     </div>
 
     <input type="hidden" name="current_page" value="<?php echo $current_page; ?>" />
@@ -79,7 +91,7 @@
 <div class="row">
     <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
         <div class="col-md-4">
-            <div class="card mb-3" id="card">
+            <div class="card mb-3">
                 <div class="row g-0">
                     <div class="col-md-4">
                         <img src="<?php echo 'pictures/' . $row['app_picture_name']; ?>" class="img-fluid rounded-start" alt="Profile Picture" >
