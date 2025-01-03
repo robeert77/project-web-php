@@ -19,6 +19,32 @@
             $_POST['company'],
             $_POST['expertise'],
             $_POST['linkedin_profile']
+            
+        ]);
+        $memberId = $db->lastInsertId();
+      
+        $fileTmpPath = $_FILES['profile_picture']['tmp_name'];
+        $fileName = $_FILES['profile_picture']['name'];
+
+        $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
+        $pictureName = $memberId . '.' . $fileExtension;
+
+        $uploadDir = 'pictures/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+
+        move_uploaded_file($fileTmpPath, $uploadDir . $pictureName);
+
+        $query = "UPDATE members
+            SET real_picture_name=?, app_picture_name=?
+            WHERE id=?";
+
+        $stmt = $db->prepare($query);
+        $stmt->execute([
+            $fileName,
+            $pictureName,
+            $memberId
         ]);
 
         header("Location: members.php");
@@ -28,37 +54,42 @@
 
 <div class="form-container">
     <h2>Add New Member</h2>
-    <form method="POST">
-        <div class="form-group">
-            <label>First Name</label>
-            <input type="text" name="first_name" class="form-control" required>
+    <form method="POST" enctype="multipart/form-data">
+    <div class="form-floating mb-3">
+            <input type="text" name="first_name" id="first_name" class="form-control" required>
+            <label for="first_name">First Name</label>
         </div>
-        <div class="form-group">
-            <label>Last Name</label>
-            <input type="text" name="last_name" class="form-control" required>
+        <div class="form-floating mb-3">
+            <input type="text" name="last_name" id="last_name" class="form-control" required>
+            <label for="last_name">Last Name</label>
         </div>
-        <div class="form-group">
-            <label>Email</label>
-            <input type="email" name="email" class="form-control" required>
+        <div class="form-floating mb-3">
+            <input type="email" name="email"  id="email" class="form-control" required>
+            <label for="email">Email</label>
         </div>
-        <div class="form-group">
-            <label>Profession</label>
-            <input type="text" name="profession" class="form-control">
+        <div class="form-floating mb-3">
+            <input type="text" name="profession" id="profession" class="form-control">
+            <label for="profession">Profession</label>
         </div>
-        <div class="form-group">
-            <label>Company</label>
-            <input type="text" name="company" class="form-control">
+        <div class="form-floating mb-3">
+            <input type="text" name="company" id="company" class="form-control">
+            <label for="company">Company</label>
         </div>
-        <div class="form-group">
-            <label>Expertise</label>
-            <textarea name="expertise" class="form-control"></textarea>
+        <div class="form-floating mb-3">
+            <textarea name="expertise" id="expertise" class="form-control" rows="3"></textarea>
+            <label for="expertise">Expertise</label>
         </div>
-        <div class="form-group">
-            <label>LinkedIn Profile</label>
-            <input type="url" name="linkedin_profile" class="form-control">
+        <div class="form-floating mb-3">
+            <input type="url" name="linkedin_profile" id="linkedin_profile" class="form-control">
+            <label for="linkedin_profile">LinkedIn Profile</label>
         </div>
-        <button type="submit" class="btn btn-primary">Add Member</button>
-    </form>
+        <div class="form-floating mb-3">
+            <input type="file" name="profile_picture" id="profile_picture" class="form-control" accept="image/*">
+            <label for="profile_picture">Profile Picture</label>
+        </div>
+        <button type="submit" class="btn btn-primary" id="colored_button">Add Member</button>
+       
+    </form> 
 </div>
 
 <?php
