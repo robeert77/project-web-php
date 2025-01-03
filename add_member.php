@@ -1,6 +1,4 @@
 <?php
-    echo "<link rel='stylesheet' type='text/css' href='css/aspect.css' />";
-
     include_once "config/database.php";
     include_once "includes/header.php";
 
