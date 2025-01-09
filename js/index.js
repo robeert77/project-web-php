@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Aplicare tema
     const savedTheme = localStorage.getItem(themeKey) || 'light';
     document.getElementById('bodyElement').setAttribute('data-bs-theme', savedTheme);
     if (savedTheme === 'dark') {
